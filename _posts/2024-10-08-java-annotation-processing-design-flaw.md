@@ -6,9 +6,12 @@ categories:
   - Blog
 tags:
   - java
+  - compiler
+  - annotations
+  - annotation-processor
 ---
 
-You may have heard about the [changes to annotation processing that have been done Java 23](https://www.oracle.com/java/technologies/javase/23-relnote-issues.html#JDK-8321314).<br/>
+You may have heard about the [changes to annotation processing that have been done Java 23](https://www.oracle.com/java/technologies/javase/23-relnote-issues.html#JDK-8321314) effectively disabling it by default.<br/>
 This post will cover the underlying topic, how I found out about it and how it got fixed.
 
 ## Background
@@ -90,7 +93,7 @@ Consider the following attack scenario
 
 The following points make this quite dangerous:
 * Stealth
-  * There is no indication from the compiler that it now executes a annotation processor <sup>before Java 21</sup>
+  * There is no indication from the compiler that it now executes a annotation processor (before Java 21)
     * Most developers don't know about this annotation processor auto-discovery behavior (none that I asked at my company which has years of Java experience knew of it)
   * As it runs at build time - there is likely no trace visible in the final output
   * A malicious processor can hide perfectly in between legitimate ones
@@ -164,9 +167,10 @@ IntelliJ IDEA also automatically imports the configuration from Maven projects.
 
 ### Getting this fixed - globally
 
-After getting this fixed in most company projects I filled a [JDK bug report](https://bugs.openjdk.org/browse/JDK-8306819) and after some time it was marked as [received](./JDK-Bug-Report-Received.png).
+After getting this fixed in most company projects I filled a [JDK bug report](https://bugs.openjdk.org/browse/JDK-8306819) and after some time it was marked as [received](/assets/blog/java-annotation-processing-design-flaw/JDK-Bug-Report-Received.png).
 
 The following things happened since then:
+
 | Issue | Description | Java Version |
 | --- | --- | --- |
 | [JDK-8310061](https://bugs.openjdk.org/browse/JDK-8310061) | If implicit annotation processing is detected a note is printed by the compiler | 21+ |
