@@ -179,6 +179,6 @@ The following things happened since then:
 
 ## Acknowledgements
 A special thanks to
-* anyone at OpenJDK who contributed to this topic
+* anyone from OpenJDK who contributed to this topic
   * especially to [Joe Darcy](https://github.com/jddarcy) who did most of the implementations (as far as I could tell)
-* my employer [XDEV Software](https://xdev.software) which made it possible to write this post
+* [XDEV Software](https://xdev.software) which made it possible to write this post
