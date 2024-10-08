@@ -55,7 +55,7 @@ After running out of ideas I looked again at the stacktrace and noticed that the
 
 So let's simply disable all annotation processors and this fixes everything?
 
-Great idea... but there was just one problem:<br/>**There were no annotation processors** - at least none was defined in the ``maven-compiler-plugin``.
+Great idea... but there was just one problem:<br/>**There were no annotation processors** - at least none was defined in the configuration of ``maven-compiler-plugin``.
 
 ### So where did that annotation processor come from and why was it executed at build time?
 
