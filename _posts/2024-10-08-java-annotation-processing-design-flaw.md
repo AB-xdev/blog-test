@@ -61,7 +61,7 @@ Great idea... but there was just one problem:<br/>**There were no annotation pro
 
 As it turns out:
 * In one of the upstream Maven modules - that was inside of all the modules that had the problem - ``hibernate-validator-annotation-processor`` was defined as a dependency
-  * The outdated dependency was no longer in use since years and had likely been forgotten during a cleanup
+  * This outdated dependency was unused for years and had likely been forgotten during a cleanup
 * This library brings a annotation processor: ``ConstraintValidationProcessor``
 * This processor [was unable to handle Java 17 code](https://hibernate.atlassian.net/browse/HV-1863)
 
@@ -75,7 +75,7 @@ Well I didn't tell you everything because deep in the JavaDocs I found this:
 
 > Unless annotation processing is disabled with the `-proc:none` option, the compiler searches for any annotation processors that are available. The search path can be specified with the `-processorpath` option. If no path is specified, then the user class path is used. Processors are located by means of service provider-configuration files named `META-INF/services/javax.annotation.processing` ... <sup>[Java Docs](https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html#annotation-processing)</sup>
 
-Now the above behavior made sense (there was a [Java's Service Loading](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ServiceLoader.html) file inside the dependency in the form of ``META-INF/services/javax.annotation.processing.Processor``) but that description really hit me as no other programming language/compiler that I know __executes code__ that it should compile.
+Now the above behavior made sense (there was a [Java's Service Loading](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ServiceLoader.html) file inside the dependency in the form of ``META-INF/services/javax.annotation.processing.Processor``) but that description really hit me as no other programming language/compiler that I know __executes code__ that it should compile... by default.
 
 ## The perfect vector
 
