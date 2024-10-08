@@ -11,7 +11,7 @@ tags:
   - annotation-processor
 ---
 
-You may have heard about the [changes to annotation processing that have been done Java 23](https://www.oracle.com/java/technologies/javase/23-relnote-issues.html#JDK-8321314) effectively disabling it by default.<br/>
+You may have heard about the [changes to annotation processing that have been done Java 23](https://www.oracle.com/java/technologies/javase/23-relnote-issues.html#JDK-8321314).<br/>
 This post will cover the underlying topic, how I found out about it and how it got fixed.
 
 ## Background
