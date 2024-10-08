@@ -16,7 +16,7 @@ This post will cover the underlying topic, how I found out about it and how it g
 
 ## Background
 
-To get an explanation what annotation processing is and why it is even there first need to hop into our DeLorean and go back to the year ~~1955~~ 2005.
+To get an explanation what annotation processing is and why it is even there first we need to hop into our DeLorean and go back to the year ~~1955~~ 2005.
 
 So back then there were no build tools like Maven or Gradle that we nowadays have. Java was still developed by Sun Microsystems and the newest version was 5.
 
