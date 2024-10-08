@@ -24,7 +24,8 @@ Java annotations were introduced with Java 5 but an API for processing them at b
 
 The general idea seems to have been to allow the generation of (boilerplate) code and similar operations. Examples that use the concept nowadays are probably [Lombok](https://projectlombok.org/) or [Dagger](https://github.com/google/dagger) (for the Android world) but these are usually run with dedicated plugins.<br/> I found [an old video of a presentation](https://www.youtube.com/watch?v=0hN6XJ69xn4) about this topic - you may want to check it out for additional background information.
 
-JSR 269 was ultimately implemented and shipped in 2006 with Java 6 and most of it was likely forgotten or never heard of over the years as better build tools such as Maven or Gradle gradually gained popularity.
+JSR 269 was ultimately implemented and shipped in 2006 with Java 6.
+Most details of it were likely ignored over the years as better build tools such as Maven or Gradle gradually gained popularity.
 
 ## How the ~~dog~~ compiler ate my records...
 
@@ -55,7 +56,7 @@ After running out of ideas I looked again at the stacktrace and noticed that the
 
 So let's simply disable all annotation processors and this fixes everything?
 
-Great idea... but there was just one problem:<br/>**There were no annotation processors** - at least none was defined in the configuration of ``maven-compiler-plugin``.
+Great idea... but there was just one problem:<br/>**There were no annotation processors** - at least none were defined in the configuration of ``maven-compiler-plugin``.
 
 ### So where did that annotation processor come from and why was it executed at build time?
 
@@ -86,15 +87,18 @@ Consider the following attack scenario:
 * Now library ``L`` suffers a supply chain attack and a malicious annotation processor + Service Loading file is inserted into the library
 * A new malicious version of library ``L`` is released
 * The automatic dependency update tool picks up the new version and creates a PR
-* Your CI - that just compiles the PR - may get compromised during compilation if it's not sandboxed or set up incorrectly
+* Your CI - that just compiles the PR - may get compromised **during compilation**
+  * This can also be abused to steal secrets present during the build e.g. access keys for registries
+  * If the build is not sand-boxed a lot more damage can be done
 * A developer checking out the update may be compromised as soon as starting the IDE
+  * This can likely not be detected by a antivirus that only uses (file) signatures for detection since it's exploited using the compiler
 
 The following points make this quite dangerous:
 * Stealth
   * There is no indication from the compiler that it now executes a annotation processor (before Java 21)
     * Most developers don't know about this annotation processor auto-discovery behavior (none that I asked at my company which has years of Java experience knew of it)
   * As it runs at build time there is likely no trace visible in the final output
-  * A malicious processor can hide perfectly in between legitimate ones
+  * A malicious processor can hide perfectly between legitimate ones
   * Without manual review of each dependency (JAR) it's extremely unlikely that anyone or anything will ever notice it - especially in big projects with hundreds of dependencies
 * Execution is triggered nearly instantly
   * The processor is triggered on compilation - which happens in IDEs and CIs all the time
