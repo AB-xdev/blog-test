@@ -114,9 +114,9 @@ I created a demo "malicious" processor that tries to open a URL and then termina
   * Eclipse compiler ``ecj``
 * Build tools that use these compilers
   * Maven's ``maven-compiler-plugin``
-  * AFAIK Gradle is not affected as annotation processors must be declared explicitly
+  * Gradle is most likely not affected as it usually uses a [Java Toolchain](https://docs.gradle.org/current/userguide/toolchains.html) and annotation processors must be declared explicitly
 * IDEs
-  * IntelliJ IDEA runs the processor when building
+  * IntelliJ IDEA results vary based on the used build tool.<br/>Executing a Maven build with the demo causes the build process.
   * AFAIK Eclipse doesn't run annotation processing by default, however if enabled:<br/>The build-process isn't sand-boxed in any way - this causes an IDE crash
 
 ### Short term fixes and workarounds
