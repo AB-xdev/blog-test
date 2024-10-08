@@ -167,7 +167,7 @@ IntelliJ IDEA also automatically imports the configuration from Maven projects.
 
 ### Getting this fixed - globally
 
-After getting this fixed in most company projects I filled a [JDK bug report](https://bugs.openjdk.org/browse/JDK-8306819) and after some time it was marked as [received](/assets/blog/java-annotation-processing-design-flaw/JDK-Bug-Report-Received.png).
+Parallel to applying fixes to existing (company) projects I also filled a [JDK bug report](https://bugs.openjdk.org/browse/JDK-8306819) and after some time it was marked as [received](/assets/blog/java-annotation-processing-design-flaw/JDK-Bug-Report-Received.png).
 
 The following things happened since then:
 
