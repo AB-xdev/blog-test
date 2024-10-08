@@ -45,7 +45,7 @@ C:\...\ClassUsingARecord.java: Internal compiler error: java.lang.Exception: jav
     at org.codehaus.classworlds.Launcher.main (Launcher.java:47)
 ```
 
-The error looked pretty weird (I never once seen a ``UnknownElementException`` before) and after a bit of debugging I came to the following conclusions:
+The error looked pretty weird (I had never seen a ``UnknownElementException`` before) and after a bit of debugging I came to the following conclusions:
 * Yes I was indeed using Java 17 - which supports ``records`` - and not some other version
 * Coworkers had the same problem when checking out the code
 * The problem was not present on any other Java 17 projects
@@ -60,8 +60,8 @@ Great idea... but there was just one problem:<br/>**There were no annotation pro
 ### So where did that annotation processor come from and why was it executed at build time?
 
 As it turns out: In one of the upstream Maven modules - that was inside of all the modules that had the problem - ``hibernate-validator-annotation-processor`` was defined as a dependency.
-
- This **outdated dependency** was unused for years and had likely been forgotten during a cleanup. The library **includes an annotation processor**: ``ConstraintValidationProcessor`` and **that processor [was unable to handle Java 17 code](https://hibernate.atlassian.net/browse/HV-1863)**.
+This **outdated library** was unused for years and had likely been forgotten during a cleanup.
+The library **contains an annotation processor**: ``ConstraintValidationProcessor`` and **that processor [was unable to handle Java 17 code](https://hibernate.atlassian.net/browse/HV-1863)**.
 
 The problem was obviously fixed by removing the dependency but that annotation processor are somehow automatically loaded and executed during build time without any notice confused me a bit...
 
@@ -180,3 +180,4 @@ A special thanks to
 * Anyone from OpenJDK who contributed to this topic
   * Especially to [Joe Darcy](https://github.com/jddarcy) who did most of the implementations (as far as I could tell)
 * [XDEV Software](https://xdev.software) which made it possible to write this post
+  * [JR](https://github.com/JohannesRabauer) for helping out with the post
