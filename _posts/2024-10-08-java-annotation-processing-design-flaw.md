@@ -11,28 +11,28 @@ tags:
   - annotation-processor
 ---
 
-You may have heard about the [changes to annotation processing that have been done Java 23](https://www.oracle.com/java/technologies/javase/23-relnote-issues.html#JDK-8321314).<br/>
-This post will cover the underlying topic, how I found out about it and how it got fixed.
+You may have heard about the [changes to annotation processing that have been done in Java 23](https://www.oracle.com/java/technologies/javase/23-relnote-issues.html#JDK-8321314).<br/>
+This post will cover the underlying topic, how I learned about it, and how it got fixed.
 
 ## Background
 
-To get an explanation what annotation processing is and why it is even there first we need to hop into our DeLorean and go back to the year ~~1955~~ 2005.
+To understand annotation processing and why it is even there, we first need to hop into our DeLorean and go back to the year ~~1955~~ 2005.
 
-So back then there were no build tools like Maven or Gradle that we nowadays have. Java was still developed by Sun Microsystems and the newest version was 5.
+So back then there were no build tools like Maven or Gradle, which we have nowadays. Java was still developed by Sun Microsystems and the newest version was 5.
 
-Java annotations were introduce with Java 5 but an API for processing them at build-time did not exist, so [JSR 269](https://www.jcp.org/en/jsr/detail?id=269) was born.
+Java annotations were introduced with Java 5 but an API for processing them at build-time did not exist, so [JSR 269](https://www.jcp.org/en/jsr/detail?id=269) was born.
 
-The general idea seems to have been to allow the generation of (boilerplate) code and similar operations. Examples who use the concept nowadays are probably [Lombok](https://projectlombok.org/) or [Dagger](https://github.com/google/dagger) (for the Android world) but these are usually run with dedicated plugins.<br/> I found [a old video of a presentation](https://www.youtube.com/watch?v=0hN6XJ69xn4) about this topic - you may want to check it out for additional background information.
+The general idea seems to have been to allow the generation of (boilerplate) code and similar operations. Examples that use the concept nowadays are probably [Lombok](https://projectlombok.org/) or [Dagger](https://github.com/google/dagger) (for the Android world) but these are usually run with dedicated plugins.<br/> I found [an old video of a presentation](https://www.youtube.com/watch?v=0hN6XJ69xn4) about this topic - you may want to check it out for additional background information.
 
 JSR 269 was ultimately implemented and shipped in 2006 with Java 6 and most of it was likely forgotten or never heard of over the years as better build tools such as Maven or Gradle gradually gained popularity.
 
 ## How the ~~dog~~ compiler ate my records...
 
-Back to the present - well nearly let's stop on a day in late 2022.
+Back to the present - well nearly: Let's stop on a day in late 2022.
 
-So back then we updated one of our bigger Maven-based projects to Java 17 and converted a few classes to the new  ``records`` and everything compiled well and got shipped.
+So back then we updated one of our bigger Maven-based projects to Java 17, we converted a few classes to the new  ``records``. Everything compiled without issues so we shipped the project.
 
-A few days later I was again adding a ``record``, tried to compile it and all of a sudden the compiler crashed with the following message:
+A few days later I was again adding a ``record``, and tried to compile it, when all of a sudden the compiler crashed with the following message:
 ```
 [ERROR] org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.10.1:compile (default-compile) on project X: Compilation failure
 ...
@@ -45,13 +45,13 @@ C:\...\ClassUsingARecord.java: Internal compiler error: java.lang.Exception: jav
     at org.codehaus.classworlds.Launcher.main (Launcher.java:47)
 ```
 
-The error looked pretty weird (I never once saw a ``UnknownElementException`` before) and after a bit of debugging I came to the following conclusions:
-* Yes I was indeed using Java 17 - that supports ``records`` - and not some other version
+The error looked pretty weird (I never once seen a ``UnknownElementException`` before) and after a bit of debugging I came to the following conclusions:
+* Yes I was indeed using Java 17 - which supports ``records`` - and not some other version
 * Coworkers had the same problem when checking out the code
 * The problem was not present on any other Java 17 projects
 * The problem only occurred in a few Maven modules, which didn't seem to like the  ``record`` keyword
 
-After running out of ideas I looked again at the stacktrace and noticed that the exception occurred on ``handleProcessor`` which - after some research - turned out to be for an annotation processors.
+After running out of ideas I looked again at the stacktrace and noticed that the exception occurred on ``handleProcessor`` which - after some research - turned out to be for an annotation processor.
 
 So let's simply disable all annotation processors and this fixes everything?
 
@@ -59,37 +59,35 @@ Great idea... but there was just one problem:<br/>**There were no annotation pro
 
 ### So where did that annotation processor come from and why was it executed at build time?
 
-As it turns out:
-* In one of the upstream Maven modules - that was inside of all the modules that had the problem - ``hibernate-validator-annotation-processor`` was defined as a dependency
-  * This outdated dependency was unused for years and had likely been forgotten during a cleanup
-* This library brings a annotation processor: ``ConstraintValidationProcessor``
-* This processor [was unable to handle Java 17 code](https://hibernate.atlassian.net/browse/HV-1863)
+As it turns out: In one of the upstream Maven modules - that was inside of all the modules that had the problem - ``hibernate-validator-annotation-processor`` was defined as a dependency.
+
+ This **outdated dependency** was unused for years and had likely been forgotten during a cleanup. The library **includes an annotation processor**: ``ConstraintValidationProcessor`` and **that processor [was unable to handle Java 17 code](https://hibernate.atlassian.net/browse/HV-1863)**.
 
 The problem was obviously fixed by removing the dependency but that annotation processor are somehow automatically loaded and executed during build time without any notice confused me a bit...
 
 ### Down the rabbit hole
 
-So the next day I did some followup research and discovered basically everything that you already read before in the "Background" section above.
+So the next day I did some follow-up research and discovered basically everything that you already read before in the "Background" section above.
 
 Well I didn't tell you everything because deep in the JavaDocs I found this:
 
-> Unless annotation processing is disabled with the `-proc:none` option, the compiler searches for any annotation processors that are available. The search path can be specified with the `-processorpath` option. If no path is specified, then the user class path is used. Processors are located by means of service provider-configuration files named `META-INF/services/javax.annotation.processing` ... <sup>[Java Docs](https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html#annotation-processing)</sup>
+> **Unless annotation processing is disabled with the `-proc:none` option, the compiler searches for any annotation processors that are available.** The search path can be specified with the `-processorpath` option. If no path is specified, then the user class path is used. Processors are located by means of service provider-configuration files named `META-INF/services/javax.annotation.processing` ... <sup>[Java Docs](https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html#annotation-processing)</sup>
 
-Now the above behavior made sense (there was a [Java's Service Loading](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ServiceLoader.html) file inside the dependency in the form of ``META-INF/services/javax.annotation.processing.Processor``) but that description really hit me as no other programming language/compiler that I know __executes code__ that it should compile... by default.
+Now the above behavior made sense (there was a [Java Service Loader](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ServiceLoader.html) file inside the dependency in the form of ``META-INF/services/javax.annotation.processing.Processor``) but that description really hit me as no other programming language/compiler that I knew __executes code__ that it should compile... by default.
 
 ## The perfect vector
 
-Also at the same time a lot of alarm bells started ringing, because a while ago I read about some supply chain attacks in NPM and this was just the manifestation of the same attack vector:
+Also at the same time, a lot of alarm bells started ringing because a while ago I read about some supply chain attacks in NPM and this was just the manifestation of the same attack vector:
 
-Consider the following attack scenario
+Consider the following attack scenario:
 * Your project is using library ``L``
 * You did enable automatic dependency updates in the form of e.g. [Renovate](https://github.com/renovatebot/renovate) or [Dependabot](https://github.com/dependabot)
 * The created PRs from the updates are compiled by your CI
 * Now library ``L`` suffers a supply chain attack and a malicious annotation processor + Service Loading file is inserted into the library
 * A new malicious version of library ``L`` is released
 * The automatic dependency update tool picks up the new version and creates a PR
-* → Your CI - that just compiles the PR - may get compromised during compilation if it's not sandboxed or setup incorrectly
-* → A developer checking out the update may be compromised as soon as starting the IDE
+* Your CI - that just compiles the PR - may get compromised during compilation if it's not sandboxed or set up incorrectly
+* A developer checking out the update may be compromised as soon as starting the IDE
 
 The following points make this quite dangerous:
 * Stealth
@@ -105,7 +103,7 @@ The following points make this quite dangerous:
 
 So at first I had a look what exactly is effected by this.
 
-I created a demo "malicous" processor that tries to open an URL and then terminates the compile process using ``System.exit`` - you may check it out [here](https://github.com/AB-xdev/java-annotation-processing-code-execution) - and tested it against various things:
+I created a demo "malicious" processor that tries to open a URL and then terminates the compile process using ``System.exit`` - you may check it out [here](https://github.com/AB-xdev/java-annotation-processing-code-execution) - and tested it against various things:
 
 * Compilers
   * Java's default compiler ``javac``
@@ -115,7 +113,7 @@ I created a demo "malicous" processor that tries to open an URL and then termina
   * AFAIK Gradle is not affected as annotation processors must be declared explicitly
 * IDEs
   * IntelliJ IDEA runs the processor when building
-  * AFAIK Eclipse doesn't run annotation processing by default, however if enabled:<br/>The build-process isn't sand-boxed in any way - this causes and IDE crash
+  * AFAIK Eclipse doesn't run annotation processing by default, however if enabled:<br/>The build-process isn't sand-boxed in any way - this causes an IDE crash
 
 ### Short term fixes and workarounds
 
@@ -179,6 +177,6 @@ The following things happened since then:
 
 ## Acknowledgements
 A special thanks to
-* anyone from OpenJDK who contributed to this topic
-  * especially to [Joe Darcy](https://github.com/jddarcy) who did most of the implementations (as far as I could tell)
+* Anyone from OpenJDK who contributed to this topic
+  * Especially to [Joe Darcy](https://github.com/jddarcy) who did most of the implementations (as far as I could tell)
 * [XDEV Software](https://xdev.software) which made it possible to write this post
