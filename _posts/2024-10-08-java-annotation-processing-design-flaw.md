@@ -50,7 +50,7 @@ The error looked pretty weird (I had never seen a ``UnknownElementException`` be
 * Yes I was indeed using Java 17 - which supports ``records`` - and not some other version
 * Coworkers had the same problem when checking out the code
 * The problem was not present on any other Java 17 projects
-* The problem only occurred in a few Maven modules, which didn't seem to like the  ``record`` keyword
+* The problem only occurred in a few Maven modules, which didn't seem to like the ``record`` keyword
 
 After running out of ideas I looked again at the stacktrace and noticed that the exception occurred on ``handleProcessor`` which - after some research - turned out to be for an annotation processor.
 
