@@ -121,21 +121,20 @@ I created a demo "malicious" processor that tries to open a URL and then termina
 
 ### Short term fixes and workarounds
 
-Well luckily there is a flag that disables annotation processing during compile:
-[``-proc:none``](https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html#option-proc)
+Well luckily there is a flag that disables annotation processing during compile: [``-proc:none``](https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html#option-proc)
 
 Simply add it to your compiler arguments and you should be fine.
 
 Example for Maven:
 ```xml
 <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-compiler-plugin</artifactId>
-	<configuration>
-		<compilerArgs>
-			<arg>-proc:none</arg>
-		</compilerArgs>
-	</configuration>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+        <compilerArgs>
+            <arg>-proc:none</arg>
+        </compilerArgs>
+    </configuration>
 </plugin>
 ```
 
