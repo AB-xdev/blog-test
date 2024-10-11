@@ -31,7 +31,7 @@ Most details of it were likely ignored over the years as better build tools such
 
 Back to the present - well nearly: Let's stop on a day in late 2022.
 
-So back then we updated one of our bigger Maven-based projects to Java 17, we converted a few classes to the new  ``records``. Everything compiled without issues so we shipped the project.
+So back then we updated one of our bigger Maven-based projects to Java 17, we converted a few classes to the new ``records``. Everything compiled without issues so we shipped the project.
 
 A few days later I was again adding a ``record``, and tried to compile it, when all of a sudden the compiler crashed with the following message:
 ```
