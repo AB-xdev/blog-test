@@ -81,13 +81,13 @@ Now the above behavior made sense (there was a [Java Service Loader](https://doc
 Also at the same time, a lot of alarm bells started ringing because a while ago I read about some supply chain attacks in NPM and this was just the manifestation of the same attack vector:
 
 Consider the following attack scenario:
-* Your project is using library ``L``
-* You did enable automatic dependency updates in the form of e.g. [Renovate](https://github.com/renovatebot/renovate) or [Dependabot](https://github.com/dependabot)
-* The created PRs from the updates are compiled by your CI
+* A project is using library ``L``
+* Automatic dependency updates in the form of e.g. [Renovate](https://github.com/renovatebot/renovate) or [Dependabot](https://github.com/dependabot) are enabled
+* The created PRs from the updates are compiled by a CI
 * Now library ``L`` suffers a supply chain attack and a malicious annotation processor + Service Loading file is inserted into the library
 * A new malicious version of library ``L`` is released
 * The automatic dependency update tool picks up the new version and creates a PR
-* Your CI - that just compiles the PR - may get compromised **during compilation**
+* The CI - that just compiles the PR - may get compromised **during compilation**
   * This can also be abused to steal secrets present during the build e.g. access keys for registries
   * If the build is not sand-boxed a lot more damage can be done
 * A developer checking out the update may be compromised as soon as starting the IDE
