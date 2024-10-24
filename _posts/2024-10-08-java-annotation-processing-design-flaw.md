@@ -96,7 +96,7 @@ Consider the following attack scenario:
 The following points make this quite dangerous:
 * Stealth
   * There is no indication from the compiler that it now executes a annotation processor (before Java 21)
-    * Most developers don't know about this annotation processor auto-discovery behavior (none that I asked at my company which has years of Java experience knew of it)
+    * Most developers don't know about this annotation processor auto-discovery behavior (none of my colleges with years of Java experience knew of it)
   * As it runs at build time there is likely no trace visible in the final output
   * A malicious processor can hide perfectly between legitimate ones
   * Without manual review of each dependency (JAR) it's extremely unlikely that anyone or anything will ever notice it - especially in big projects with hundreds of dependencies
