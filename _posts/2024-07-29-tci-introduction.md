@@ -57,9 +57,9 @@ By using the factory pattern when creating container we make it easier for the d
   </tr>
   </table>
 
-For each infrastructure there is also a factory to create new ones. This factory can be easily configured and handles such things as Container creation, PreStarting and tracking the created TCI for the additional features described below.
+For each "infrastructure" (abbreviated TCI) there is also a factory to create new ones. This factory can be easily configured and handles such things as Container creation, PreStarting and tracking the created TCI for the additional features described below.
 
-Customizing containers looks like this in the TCI_FACTORY-Class
+Customizing containers/infrastructure looks like this in the TCI_FACTORY-Class
   ```java
   @Override
   public void start(final String containerName) {
@@ -81,7 +81,7 @@ By using factories the framework can also improve performance through handling p
 
 ### 2. Running tests as fast as possible
 
-#### Why is this important?
+#### Why is this important in the first place?
 Running test as fast as possible has multiple advantages:
 * When run by a developer:<br/>Usually there is not much else you can do when running tests - except maybe getting some coffee. It's also possible to start another task but then you might lose focus on your original one and have to "rethink" back into the topic later.
 * When run by a CI:
