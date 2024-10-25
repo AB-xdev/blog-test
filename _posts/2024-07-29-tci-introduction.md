@@ -115,7 +115,7 @@ There is also a live example (using GitHub Actions), which yields the following 
 So as we can see in the best case (D) there is a near 50% speed improvement when compared to running the tests conventional manor (A).
 
 #### 2.2. Optimized Testcontainers Network
-It has an optimized implementation of Testcontainers Network
+An optimized implementation of Testcontainers Network is used:
   <table>
   <tr>
   <td>
@@ -160,7 +160,7 @@ It has an optimized implementation of Testcontainers Network
   
 #### 2.3. Container Leak detection
 This detects if container that have been started by a test are also terminated. Prevents the test machine from running out of resources.<br/>
-In the following example the Testcontainer is created, but never terminated. The Testcontainer is therefore still running.
+In the following example the Testcontainer is created, but never terminated.
   ```java
   @Test
   void test() {
@@ -180,7 +180,7 @@ In the following example the Testcontainer is created, but never terminated. The
 
 ### 3. Quality of Life
 
-We also provide some minor enhancements through the framework:
+The framework also provides some minor enhancements:
 
 #### 3.1. Human-readable names for containers
 All started containers have a unique human-readable name, which makes identification easier when tracing or debugging
@@ -232,7 +232,7 @@ All started containers have a unique human-readable name, which makes identifica
   </table>
 
 #### 3.2. Test run time statistics
-A Tracing mechanism that makes finding bottlenecks and similar problems easier<br/>
+A tracing mechanism that makes finding bottlenecks and similar problems easier<br/>
   _Example:_
   ```
   [main] [i.tracing.TCITracingAgent] === Test Tracing Info ===
