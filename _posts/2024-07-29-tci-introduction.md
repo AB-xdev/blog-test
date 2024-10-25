@@ -168,7 +168,7 @@ In the following example the Testcontainer is created, but never terminated.
     ...
   }
   ```
-  After running these tests with our Testcontainers Infrastructure Framework you'll get the following error in your logs:
+  After running these tests with the framework the following error will show up in the logs:
   ```
   ERROR s.x.tci.leakdetection.TCILeakAgent - !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ERROR s.x.tci.leakdetection.TCILeakAgent - ! PANIC: DETECTED CONTAINER INFRASTRUCTURE LEAK !
