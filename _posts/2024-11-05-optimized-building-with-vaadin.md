@@ -1,7 +1,7 @@
 ---
+layout: post
 title: |
   Optimized building with Vaadin Flow 24.5
-author: AB
 categories:
   - Blog
 tags:

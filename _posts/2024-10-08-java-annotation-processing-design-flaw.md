@@ -1,7 +1,7 @@
 ---
+layout: post
 title: |
   Discovering the perfect Java Supply Chain Attack vector and how it got fixed
-author: AB
 categories:
   - Blog
 tags:

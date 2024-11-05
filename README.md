@@ -1,6 +1,6 @@
 # Blog
 
-Based on https://github.com/mmistakes/minimal-mistakes
+Based on https://github.com/jekyll/minima
 
 ## Setup
 Run it locally: ``docker compose up``

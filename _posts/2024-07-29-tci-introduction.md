@@ -1,7 +1,7 @@
 ---
+layout: post
 title: |
   Supercruising your Testcontainer Test with XDEV's TCI Framework
-author: AB
 categories:
   - Blog
 tags:
