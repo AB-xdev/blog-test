@@ -272,7 +272,7 @@ If you don't require Vaadin's SBOM generation you can remove it:
 
 <!-- Might contain traces of Eclipse bashing  --->
 
-Because Eclipse is clearly the most supreme and best IDE in the universe, one has to introduce dedicated support for it into your Maven plugin.
+Because Eclipse is clearly the most supreme and best IDE in the universe, one has to introduce dedicated support for it into a Maven plugin.
 
 If you use the command line or a more inferior IDE like IntelliJ IDEA - which has only 85% market share - you can consider removing it:
 * Exclude the ``org.codehaus.plexus:plexus-build-api`` dependency
