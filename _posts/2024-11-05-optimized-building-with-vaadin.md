@@ -45,7 +45,7 @@ Solution:
 
 Vaadin 24.5 includes support for React by default.
 
-If you don't use react you can do the following:
+If you don't use React you can do the following:
 * Exclude the ``com.vaadin:flow-react`` dependency
 * Configure the ``vaadin-maven-plugin``
   * set ``reactEnable`` to ``false`` to prevent it from checking if React is present during each build
