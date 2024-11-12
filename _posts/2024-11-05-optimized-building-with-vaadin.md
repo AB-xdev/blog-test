@@ -289,7 +289,7 @@ Usually you don't need to run this check as
 * It's otherwise sufficient to run the check once during a Vaadin update or initial setup
 
 The check can be disabled by:
-* Setting the system property ``vaadin.ignoreVersionChecks`` to ``true`` when the plugin is run
+* Setting the system property ``vaadin.ignoreVersionChecks`` to ``true`` when the plugin is executed
 
 #### Use a faster ``ClassFinder``
 
@@ -304,7 +304,7 @@ However the default solution is not very efficient:
 
 This can be improved by:
 * Using a cached ``ClassFinder``
-* Only scanning the relevant locations - e.g. ignoring all ``.jar``-files
+* Only scanning the relevant locations - e.g. ignoring most ``.jar``-files
 
 ### Telemetry
 
