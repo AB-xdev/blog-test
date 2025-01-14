@@ -32,7 +32,7 @@ A lot of people I encountered and talked about this said something like:
 * You are using it wrong! Don't do that!
    * I'm using it the way I need to.<br/>If you can provide a better solution that works for me than please do so.
 
-Also what is the problem with e.g. keeping code ``protected`` or removing the ``final`` from a method?<br/>
+Also what is the problem with e.g. keeping code ``protected`` or removing the ``final`` from a method?
 There are 0 drawbacks for the library and only benefits for the implementer.
 
 #### The encapsulation topic
