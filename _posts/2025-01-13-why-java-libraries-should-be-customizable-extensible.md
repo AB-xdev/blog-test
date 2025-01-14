@@ -30,7 +30,7 @@ Let's do a quick web-search what "encapsulation" means:
 The key facts here are that the "implementation details" are hidden.
 
 This can easily be achieved by using something like a Factory/Builder-pattern or by simply using ``protected``.<br/>
-That way the implementation is still "hidden" but can easily be modified by the developer who uses the library, if required.
+That way the implementation is still "hidden" but it can be easily modified by the developer who uses the library, if required.
 
 ### Examples
 
