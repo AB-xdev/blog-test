@@ -9,9 +9,10 @@ tags:
 ---
 
 So after getting asked - like the 50th time - during java library development:
-* Why are you using interfaces, Builders, Factories?
+* Why are you using Interfaces, Builders, Factories?
 * Why is all of your code using ``protected`` and not ``private``?
 * Why are you only using ``final`` for ``static`` classes?
+* Why are there configuration options?
 
 I now chose to write a post so that I can simply reference it next time the same question comes up.
 
@@ -19,15 +20,28 @@ The short answer: Too keep the library customizable/extensible!
 
 ![](../../../../assets/blog/why-java-libraries-should-be-customizable-extensible/Patrick_Wallet_Library.jpg)
 
-### Encapsulation
+### Think out of the box
 
-But now you are yourself likely asking: _Why? Isn't this against encapsulation?_
+A lot of people I encountered and talked about this are like: 
+* This will never be used in that way!
+   * Well someone (me) is using it _that way_ so...
+* You are using it wrong! Don't do that!
+   * I'm using it the way I need to.<br/>If you can provide a better solution than please do so...
+
+Such statements are ignorant at best and insulting at worst.
+
+Also what is the problem with e.g. keeping code ``protected`` or removing the ``final`` from a method?<br/>
+There are 0 drawbacks for the library and only benefits for the implementer.
+
+#### The encapsulation topic
+
+But now you are yourself likely asking: _Isn't this also against encapsulation?_
 
 Let's do a quick web-search what "encapsulation" means:
 * Essentially, encapsulation prevents external code from being concerned with the internal workings of an object. <sup><a href="https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)">Source</a></sup>
 * It allows implementation details to be hidden while exposing a public interface for interaction. <sup><a href="https://www.geeksforgeeks.org/encapsulation-in-java/">Source</a></sup>
 
-The key facts here are that the "implementation details" are hidden.
+The key fact here is that the "implementation details" are hidden.
 
 This can easily be achieved by using something like a Factory/Builder-pattern or by simply using ``protected``.<br/>
 That way the implementation is still "hidden" but it can be easily modified by the developer who uses the library, if required.
@@ -44,6 +58,7 @@ To further emphasize my point here's an excerpt of problems that I encountered w
 | [Spring Boot OidcUserService](https://github.com/spring-projects/spring-security/issues/14898) | Method couldn't be overridden.<br/>After update method was customizable, however [original code is still private and can't be reused](https://github.com/spring-projects/spring-security/blob/b63e8f50a5e90a47b5dac28d2c2d952d8de11973/oauth2/oauth2-client/src/main/java/org/springframework/security/oauth2/client/oidc/userinfo/OidcUserService.java#L148-L177).<br/> | Waited for update/<br/>Copied code |
 | [Quarkus - OIDC Back-channel Logout](https://github.com/quarkusio/quarkus/issues/42990) | Serious malfunction, rendering functionality completely unusable.<br/>Everything is private and not overwriteable. Only possible way to patch it are bytecode modifications or waiting for update. | PR/Code supplied.<br/>Implementing project delayed for ~1 week ($), while waiting for update and then performing it. |
 | [prometheus-metrics Protobuf is not optional](https://github.com/prometheus/client_java/issues/1173) | Bloated library with obsolete/experimental protocol.<br/>Used protobuf version was flagged by vulnerability scanner.<br/>[Not designed in a customizable way](https://github.com/prometheus/client_java/blob/v1.3.1/prometheus-metrics-exposition-formats/src/main/java/io/prometheus/metrics/expositionformats/ExpositionFormats.java). | Overlay/Update provided |
+| [Hibernate Annotation Processor - Entity Indexing](https://hibernate.atlassian.net/browse/HHH-18873) | [No mention anywhere in changelogs.<br/>No option/flag to disable this; active by default.](https://hibernate.atlassian.net/browse/HHH-18162?focusedCommentId=117262)<br/>[Functionality is useless for some cases](https://hibernate.atlassian.net/browse/HHH-18162?focusedCommentId=117274) and [performance problems](https://hibernate.atlassian.net/browse/HHH-18863).<br/>No way to overwrite the code since fields and methods are private.<br/> | Option to disable/Update provided
 | [Flyway-Core Slim](https://github.com/xdev-software/flyway-core-slim) | [Private methods](https://github.com/flyway/flyway/blob/ba8b11c0272c744786e52049b0391710253ea7d2/flyway-core/src/main/java/org/flywaydb/core/internal/plugin/PluginRegister.java#L85-L104) don't allow for filtering out [unused things](https://github.com/flyway/flyway/issues/3893). | Overlay |
 
 <sup>1</sup> = Common outcomes explained:
