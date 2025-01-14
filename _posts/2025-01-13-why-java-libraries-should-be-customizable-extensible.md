@@ -8,17 +8,17 @@ tags:
   - libraries
 ---
 
+I now chose to write a post about this topic
+* because it has already cost a lot of time and money[^1]
+* so that I can reference it the next time when it comes up again
+
+[^1]: We are not talking about small amounts of money here - Having a team sit around and wait just for a specific update to be released costs a lot!
+
 So after getting asked - like the 50th time - during java library development:
 * Why are you using Interfaces, Builders, Factories?
 * Why is all of your code using ``protected`` and not ``private``?
 * Why are you only using ``final`` for ``static`` classes?
 * Why are there so many configuration options?
-
-I now chose to write a post
-* because this topic has already cost a lot of time and money[^1]
-* so that I can reference it the next time when it comes up again
-
-[^1]: We are not talking about small amounts of money here - Having a team sit around and wait just for a specific update to be released costs a lot!
 
 The short answer: Too keep the library customizable/extensible!
 
