@@ -35,7 +35,7 @@ A lot of people I encountered and talked about this said something like:
 Also what is the problem with e.g. keeping code ``protected`` or removing the ``final`` from a method?
 There are 0 drawbacks for the library and only benefits for the implementer.
 
-#### The encapsulation topic
+#### Encapsulation
 
 I also often heard that this is against the encapsulation principle.
 
@@ -43,7 +43,7 @@ The key fact of encapsulation is that the "implementation details" are hidden.[^
 
 [^2]: See also: [Wikipedia](https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)), [geeksforgeeks.org](https://www.geeksforgeeks.org/encapsulation-in-java)
 
-This can easily be achieved by using something like a Factory/Builder-pattern or by simply using ``protected``.<br/>
+This can easily be achieved by using something like a Factory/Builder-pattern or by simply using ``protected``.
 That way the implementation is still "hidden" - as only public methods can be accessed from the outside - but it can still be modified by the implementer using overrides.
 
 
