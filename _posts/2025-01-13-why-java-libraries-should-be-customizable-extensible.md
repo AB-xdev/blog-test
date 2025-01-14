@@ -5,7 +5,7 @@ title: |
 categories:
   - Blog
 tags:
-  - opensource
+  - libraries
 ---
 
 So after getting asked - like the 50th time - during java library development:
