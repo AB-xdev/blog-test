@@ -17,7 +17,7 @@ I now chose to write a post so that I can simply reference it next time the same
 
 The short answer: Too keep the library customizable/extensible!
 
-![](/assets/blog/why-java-libraries-should-be-customizable-extensible/Patrick_Wallet_Library.jpg)
+![](../assets/blog/why-java-libraries-should-be-customizable-extensible/Patrick_Wallet_Library.jpg)
 
 ### Encapsulation
 
